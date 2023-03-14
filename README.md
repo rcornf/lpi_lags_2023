@@ -17,7 +17,7 @@ Before running any code files, please download the relevant environmental data.
 The links below provide access to the data, required local file paths are provided in brackets.
 
 LUH2:  
-[link](https://luh.umd.edu/LUH2/LUH2_v2h/states.nc)
+[Historical](https://luh.umd.edu/LUH2/LUH2_v2h/states.nc)
 (Data/LUH2/states.nc)
 
 [link](https://luh.umd.edu/LUH2/LUH2_v2f/IMAGE/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-IMAGE-ssp126-2-1-f_gn_2015-2100.nc)
