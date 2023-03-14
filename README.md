@@ -1,6 +1,5 @@
-README
-
-This repository contains the code needed to reproduce the analyses found within **Cornford et al. 2023, Ongoing over-exploitation and delayed responses to environmental change highlight the urgency for action to promote vertebrate recoveries by 2030**.
+This repository contains the code needed to reproduce the analyses found within 
+**Cornford et al. 2023, Ongoing over-exploitation and delayed responses to environmental change highlight the urgency for action to promote vertebrate recoveries by 2030**.
 
 
 ---
@@ -20,53 +19,56 @@ LUH2:
 [Historical](https://luh.umd.edu/LUH2/LUH2_v2h/states.nc)
 (Data/LUH2/states.nc)
 
-[link](https://luh.umd.edu/LUH2/LUH2_v2f/IMAGE/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-IMAGE-ssp126-2-1-f_gn_2015-2100.nc)
+[Future SSP1 RCP2.6](https://luh.umd.edu/LUH2/LUH2_v2f/IMAGE/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-IMAGE-ssp126-2-1-f_gn_2015-2100.nc)
 (Data/LUH2/ssp1_rcp2.6.nc)
 
-[link](https://luh.umd.edu/LUH2/LUH2_v2f/AIM/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-AIM-ssp370-2-1-f_gn_2015-2100.nc)
+[Future SSP3 RCP7.0](https://luh.umd.edu/LUH2/LUH2_v2f/AIM/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-AIM-ssp370-2-1-f_gn_2015-2100.nc)
 (Data/LUH2/ssp3_rcp7.0.nc)
 
-[link](https://luh.umd.edu/LUH2/LUH2_v2f/MAGPIE/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-MAGPIE-ssp585-2-1-f_gn_2015-2100.nc)
+[Future SSP5 RCP8.5](https://luh.umd.edu/LUH2/LUH2_v2f/MAGPIE/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-MAGPIE-ssp585-2-1-f_gn_2015-2100.nc)
 (Data/LUH2/ssp5_rcp8.5.nc)
 
 
 IPSL: 
-[link](https://data.isimip.org/datasets/b6ed4b89-43aa-4d79-9206-5b185a356468/)
+[Historical](https://data.isimip.org/datasets/b6ed4b89-43aa-4d79-9206-5b185a356468/)
 all files from 1901 onwards are needed
-(Data/IPSL/<files>)
+(Data/IPSL/< files>)
 
-[link](https://data.isimip.org/datasets/a7569f3c-1543-46e9-b1ef-cf791cf83859/)
+[Future SSP1 RCP2.6](https://data.isimip.org/datasets/a7569f3c-1543-46e9-b1ef-cf791cf83859/)
 (Data/IPSL_126/< files>)
 
-[link](https://data.isimip.org/datasets/206170bc-41e4-46df-bde5-76a86b815f8d/)
+[Future SSP3 RCP7.0](https://data.isimip.org/datasets/206170bc-41e4-46df-bde5-76a86b815f8d/)
 (Data/IPSL_370/< files>)
 
-[link](https://data.isimip.org/datasets/f0fb9bcf-36ec-420d-8590-bd8dd697c7d6/)
+[Future SSP5 RCP8.5](https://data.isimip.org/datasets/f0fb9bcf-36ec-420d-8590-bd8dd697c7d6/)
 (Data/IPSL_585/< files>)
 
 
-HYDE 3.2: 
-[link](https://dataportaal.pbl.nl/downloads/HYDE/HYDE3.2/baseline.zip)
+[HYDE 3.2](https://dataportaal.pbl.nl/downloads/HYDE/HYDE3.2/baseline.zip):
 all files should be extracted
 (Data/HYDE3.2/< files>)
 
-CRU TS 4.04: 
-[link](https://crudata.uea.ac.uk/cru/data/hrg/cru_ts_4.04/cruts.2004151855.v4.04/tmp/cru_ts4.04.1901.2019.tmp.dat.nc.gz)
+[CRU TS 4.04](https://crudata.uea.ac.uk/cru/data/hrg/cru_ts_4.04/cruts.2004151855.v4.04/tmp/cru_ts4.04.1901.2019.tmp.dat.nc.gz):
 file needs to be extracted
 (Data/cru_ts4.04.1901.2019.tmp.dat.nc)
 
-An IUCN API token is also required for 01_dataprep.R, one can be requested here: [link](https://apiv3.iucnredlist.org/api/v3/token.)
+[ESA](https://www.esa-landcover-cci.org/?q=node/164):
+Optional additional data used in Supplementary analysis
+(Data/esa_lc/< files>)
+
+An IUCN API token is also required for 01_dataprep.R, one can be requested [here](https://apiv3.iucnredlist.org/api/v3/token.).
 
 
 ---
 
+
 **Overview of code files:**
 
 * 01_analysis_functions.R - Assorted functions used in subsequent analysis.
-* 01_dataprep.R – Prepare data for subsequent analyses. Note, the raw LPD file is not provided due to confidential population data. We include an anonymised version of the processed data (populations and environmental) that can be used in the following analysis.  
+* 01_dataprep.R – Prepare data for subsequent analysis. Note, the raw LPD file is not provided due to confidential population data. We include an anonymised version of the processed data (populations and environmental, anon_dat.rds) that can be used in the following analysis.  
 * 02_initial_models.R – Run initial, lagged models.  
 * 03_initial_analysis.R – Analyse the initial models for optimal lags and conduct sensitivity tests.  
-* 04_main_models.R – Run final models, having dropped influential populations/species.  
+* 04_main_models.R – Re-run lagged models, having dropped influential populations/species.  
 * 05_bm_models.R - Run models separately for species with different body-mass categories (small, medium, large).
 * 06_final_analysis.R – Analyse the main and bm-split models to obtain optimal lags and produce main results/figures.  
 * 07_cv_top_models.R, 08_dp_models.R, 09_ecol_models.R, 10_env_models.R – Run additional models to check stability of results under cross-validation, when using alternative data selection thresholds, for different ecological subsets, and across different environmental data, respectively.  
@@ -77,9 +79,10 @@ An IUCN API token is also required for 01_dataprep.R, one can be requested here:
 
 ---
 
+
 **Overview of data files:**
 
-* Amniote_Database_Aug_2015.csv - Source of body mass darta.
+* Amniote_Database_Aug_2015.csv - Source of body mass data.
 * anon_dat.rds - Anonymised version of data used to fit models.
 * bird_gen_length_Bird2020.xlsx - Source of bird generation lengths.
 * BirdFuncDat.txt - Source of bird diet types.
@@ -87,7 +90,7 @@ An IUCN API token is also required for 01_dataprep.R, one can be requested here:
 * env_126.rds - Environmental data for SSP1 RCP 2.6, pre extracted/procesed.
 * env_370.rds - Environmental data for SSP3 RCP 7.0, pre extracted/procesed.
 * env_585.rds - Environmental data for SSP5 RCP 8.5, pre extracted/procesed.
-* env_hist.rds - Historical environemntal data.
+* env_hist.rds - Historical environemntal data, pre extracted/procesed.
 * esa_data.rds - Agricultural land-cover estimates from ESA.
 * lag_specs.rds - Specification for lag-based models.
 * mam_gen_length_Pacifici2013.xls - Source of mammal generation lengths.
@@ -96,12 +99,6 @@ An IUCN API token is also required for 01_dataprep.R, one can be requested here:
 
 ---
 
-**License**
-
-cc...
-
-
----
 
 **sessionInfo()**
 
