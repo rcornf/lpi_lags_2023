@@ -1,5 +1,5 @@
 This repository contains the code needed to reproduce the analyses found within
- 
+
 **Cornford et al. 2023, Ongoing over-exploitation and delayed responses to environmental change highlight the urgency for action to promote vertebrate recoveries by 2030**.
 
 
@@ -12,6 +12,8 @@ Figures relevant to the manuscript can be found in Results/Figs.
 All other results and intermediate data files are excluded due to their cumulative size.
 
 ---
+
+###### Data requirements
 
 Before running any code files, please download the relevant environmental data.  
 The links below provide access to the data, required local file paths are provided in brackets.
@@ -63,9 +65,9 @@ An IUCN API token is also required for 01_dataprep.R, one can be requested [here
 ---
 
 
-**Overview of code files:**
+###### Overview of code files:
 
-* 01_analysis_functions.R - Assorted functions used in subsequent analysis.
+* 00_analysis_functions.R - Assorted functions used in subsequent analysis.
 * 01_dataprep.R – Prepare data for subsequent analysis. Note, the raw LPD file is not provided due to confidential population data. We include an anonymised version of the processed data (populations and environmental, anon_dat.rds) that can be used in the following analysis.  
 * 02_initial_models.R – Run initial, lagged models.  
 * 03_initial_analysis.R – Analyse the initial models for optimal lags and conduct sensitivity tests.  
@@ -81,7 +83,7 @@ An IUCN API token is also required for 01_dataprep.R, one can be requested [here
 ---
 
 
-**Overview of data files:**
+###### Overview of data files:
 
 * Amniote_Database_Aug_2015.csv - Source of body mass data.
 * anon_dat.rds - Anonymised version of data used to fit models.
