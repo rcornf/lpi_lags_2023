@@ -9,7 +9,7 @@ All analysis was conducted using R 4.1.3
 A copy of the session information and packages used can be found at the bottom of this page.
 
 Figures relevant to the manuscript can be found in Results/Figs.  
-All other results and intermediate data files are excluded due to their cumulative size.
+All other results and many intermediate data files are excluded due to their cumulative size.
 
 ---
 
