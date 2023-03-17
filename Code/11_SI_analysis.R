@@ -654,7 +654,7 @@ p_ecol_coefs_row <- bind_rows(fig_ls$coef_df %>%
                                      "BM", "PA", "Man", "Use"))) %>%
   mutate(ecol_sub = factor(ecol_sub,
                            levels = c("main", 
-                                      "carn", "herb", "tmpr", "trop"))) %>%
+                                      "herb", "carn", "tmpr", "trop"))) %>%
   plot_coef_row() +
   facet_grid(ecol_sub~class,
              labeller = labeller("class" = c("bird" = "Birds",
