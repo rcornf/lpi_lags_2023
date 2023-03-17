@@ -325,7 +325,7 @@ dpmin_avg_coefs_df <- bind_rows(fig_ls$coef_df %>%
                                 dp_figs$`4`$coef_df,
                                 dp_figs$`5`$coef_df) %>%
   filter(type == "year" & delta < 6 & model == "m1b") %>%
-  group_by(class, model, ecol_sub, dp_min) %>%
+  group_by(class, model, ecol_sub, dp_min, coef_nm) %>%
   mutate(aic_w = exp(-1/2*delta)/sum(exp(-1/2*delta))) %>%
   ungroup() %>%
   group_by(class, model, ecol_sub, dp_min, coef_nm) %>%
@@ -491,7 +491,7 @@ avg_coefs_df <- bind_rows(subset(fig_ls$coef_df, type == "year" & model == "m1b"
                           subset(ecol_figs$coef_df, type == "year" & model == "m1b" & 
                                    ecol_sub %in% c("carn", "herb", "tmpr", "trop"))) %>%
   filter(delta < 6) %>%
-  group_by(class, model, ecol_sub) %>%
+  group_by(class, model, ecol_sub, coef_nm) %>%
   mutate(aic_w = exp(-1/2*delta)/sum(exp(-1/2*delta))) %>%
   ungroup() %>%
   group_by(class, model, ecol_sub, coef_nm) %>%
@@ -1082,7 +1082,7 @@ env_avg_coefs_df <- bind_rows(fig_ls$coef_df %>%
                                 mutate(env_dat = "CRU, HYDE")
 ) %>%
   filter(type == "year" & delta < 6 & model == "m1b") %>%
-  group_by(class, model, ecol_sub, env_dat) %>%
+  group_by(class, model, ecol_sub, env_dat, coef_nm) %>%
   mutate(aic_w = exp(-1/2*delta)/sum(exp(-1/2*delta))) %>%
   ungroup() %>%
   group_by(class, model, ecol_sub, env_dat, coef_nm) %>%

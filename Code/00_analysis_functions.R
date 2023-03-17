@@ -423,7 +423,8 @@ dat_summary_plttr <- function(df){
                    function(x){
                      x$Npops <- nrow(x)
                      return(x[1,c("loc_idx", "pa", "Class", "Location", "Country", 
-                                  "Latitude", "Longitude", "Npops")])})
+                                  "Latitude", "Longitude", 
+                                  "Npops")])})
   loc_dat$Longitude[loc_dat$Longitude < -170] <- 180+abs(diff(c(-180, loc_dat$Longitude[loc_dat$Longitude < -170])))
   
   loc_plt <- ggplot(loc_dat) +

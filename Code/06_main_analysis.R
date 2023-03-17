@@ -60,7 +60,8 @@ mam_df1  <- subset(dat$mam_df, DP_to_2014 >= 3 & lambda_rsq > 0)
 bird_df2 <- subset(bird_df1, !(spp_idx %in% c("Gyps_bengalensis", "Podiceps_nigricollis")))
 mam_df2 <- subset(mam_df1, !(ID %in% c(23514)))
 
-# Note: dat_summary_plttr will not run due to lack of lat/long in anaonymised data
+# Note: dat_summary_plttr will not run due to lack of lat/long in anonymised data
+# Comment out location related code in function to run without
 dat_summ_plt_ls <- dat_summary_plttr(rbind.fill(mam_df2,
                                                 bird_df2))
 
@@ -170,7 +171,7 @@ avg_coefs_df <- bind_rows(subset(fig_ls$coef_df, type == "year" & model == "m1b"
                           subset(bm_figs$coef_df, type == "year" & model == "m1b")
                           ) %>%
   filter(delta < 6) %>%
-  group_by(class, model, ecol_sub) %>%
+  group_by(class, model, ecol_sub, coef_nm) %>%
   mutate(aic_w = exp(-1/2*delta)/sum(exp(-1/2*delta))) %>%
   ungroup() %>%
   group_by(class, model, ecol_sub, coef_nm) %>%
@@ -512,7 +513,7 @@ p_mspec_lags_sqrt
 
 mspec_avg_coefs_df <- subset(fig_ls$coef_df, type == "year") %>%
   filter(delta < 6) %>%
-  group_by(class, model, ecol_sub) %>%
+  group_by(class, model, ecol_sub, coef_nm) %>%
   mutate(aic_w = exp(-1/2*delta)/sum(exp(-1/2*delta))) %>%
   ungroup() %>%
   group_by(class, model, ecol_sub, coef_nm) %>%
