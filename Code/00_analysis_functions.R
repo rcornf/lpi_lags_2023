@@ -206,6 +206,7 @@ mod_rank_plttr <- function(df){
   mod_rank_delta_plt
 }
 
+# Wrapper function to rank models and produce preliminary figures related to lags
 analyses_wrap_ <- function(df){
   
   # ignore loo/loobsr for now...
@@ -418,10 +419,10 @@ GeomFlatViolin_L <-
 # Function to plot a summary of model fitting data
 dat_summary_plttr <- function(df){
   # Location summary data
-  loc_dat <- ddply(df, .(loc_id, Class), 
+  loc_dat <- ddply(df, .(loc_idx, Class), 
                    function(x){
                      x$Npops <- nrow(x)
-                     return(x[1,c("loc_id", "pa", "Class", "Location", "Country", 
+                     return(x[1,c("loc_idx", "pa", "Class", "Location", "Country", 
                                   "Latitude", "Longitude", "Npops")])})
   loc_dat$Longitude[loc_dat$Longitude < -170] <- 180+abs(diff(c(-180, loc_dat$Longitude[loc_dat$Longitude < -170])))
   
@@ -624,6 +625,7 @@ dat_summary_plttr <- function(df){
 }
 
 
+# Function to plot variation in model coefficients over lags
 plot_coef_row <- function(df){
   coef_lim <- range(df$coef_val.1)
   
@@ -708,7 +710,7 @@ m_fit_null <- function(df){
   return(metr_df)
 }
 
-## Env rate calc functions
+## Env rate of cange calc functions
 cc_calc <- function(strt, end, loc, env_df){
   tmp_env <- subset(env_df, loc_idx == loc &
                       Year %in% (strt:end))
@@ -803,6 +805,8 @@ env_rate_calc <- function(df, spec, env){
   df
 }
 
+
+# Assess inlfuential populations/species/locations
 infl_assess_wrap <- function(pop_df, mod_spec, env_df){
   # prep model data
   m_df <- env_rate_calc(pop_df, mod_spec, env_df)
@@ -873,6 +877,7 @@ infl_assess_wrap <- function(pop_df, mod_spec, env_df){
   ))
 }
 
+# Plot cook's distance
 cooks_plttr <- function(res_ls, lag_type, drop_type){
   plt_df <- bind_rows(lapply(res_ls, function(x, lag_, drop_){
     if (!is.null(x)){
@@ -1134,9 +1139,6 @@ fut_env_rate_calc_yrs <- function(lags, fut_env_ls, env_){
 
 
 
-# TODO: swap to model-pop projection
-
-
 ### function to plot pop specific graphic given pop id...
 pop_graphic_plttr <- function(pop_id){
   pop_row <- subset(lpd, ID == pop_id)
@@ -1274,6 +1276,7 @@ pop_graphic_plttr <- function(pop_id){
 }
 
 
+# Predict pop trends in response to env change across a range of conditions
 predict_env_response <- function(model_coef_df){
   pred_df <- expand.grid(cc_s = seq(-2.5,2.5, length.out = 100),
                          luc_s = seq(-2.5,2.5, length.out = 100)) %>%
@@ -1300,6 +1303,7 @@ predict_env_response <- function(model_coef_df){
   return(pred_df)
 }
 
+# Get model-averaged population responses to environmental change combinations
 env_response_pred_av_wrap <- function(coef_df, metr_df){
   
   # for each m, get sub df, 
@@ -1351,7 +1355,7 @@ lmm_bm_fit_store <- function(mod_df, pop_df, env_df){
     print(sprintf("Fitting model %d", i))
     
     # subset to bm_split
-    
+    # Note: if ecol_sub == main, model for all pops is fitted
     if (mod_df$ecol_sub[i] == "bm1"){
       df <- subset(pop_df, bm <= bm_quants[1])
     }
@@ -1488,7 +1492,7 @@ mod_proj <- function(lmm_dat, env_fut){
   
   # Aggregate /weight outputs to give LPI-style indices
   print("Aggregating projections")
-  # weighted av of lambdas
+  # Assign akaike weights to model predictions
   w_sc_proj_df <- bind_rows(sc_proj_ls)
   
   w_sum <- sum( exp( -0.5 * lmm_dat$mod_spec$delta ) )
@@ -1531,7 +1535,7 @@ mod_proj <- function(lmm_dat, env_fut){
     mutate(pred_incl_ranef_Idx = cumprod(pred_incl_ranef_mult),
            pred_excl_ranef_Idx = cumprod(pred_excl_ranef_mult))
   
-  # LPI-style index av over models
+  # LPI-style index - av over models
   w_av_spp_sc_proj_df <- spp_sc_proj_df %>%
     group_by(spp_idx, LPI_Realm, class, Dec, TS_strt, TS_end, sc) %>%
     dplyr::summarise(pred_incl_ranef = stats::weighted.mean(pred_incl_ranef, w, na.rm = T),
@@ -1582,6 +1586,7 @@ mod_proj <- function(lmm_dat, env_fut){
 }
 
 
+# Plotter function for population data graphic
 pop_graphic_plttr <- function(pop_id, lpd, env_df, mod_df){
   pop_row <- subset(lpd, ID == pop_id)
   tmp_pop_df <- data.frame("Year" = 1950:2014,
@@ -1617,13 +1622,6 @@ pop_graphic_plttr <- function(pop_id, lpd, env_df, mod_df){
     geom_point(aes(x = Year, y = val, colour = var),
                alpha = 0.5) +
     # pop vline and gam
-    # geom_smooth(aes(x = Year, y = val, colour = var),
-    #             size = 2,
-    #             method = "gam",
-    #             se = F,
-    #             data = tmp_pop_df %>%
-    #               mutate(val = abund,
-    #                      var = "Abundance")) +
     geom_line(aes(x = Year, y = 10^val, colour = var),
               size = 2,
               method = "gam",

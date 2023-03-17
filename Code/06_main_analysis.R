@@ -24,20 +24,17 @@ library(gridExtra)
 library(gtable)
 library(cowplot)
 library(ggpubr)
-library(dplyr)
-library(influence.ME)
-library(raster)
+library(dplyr)          #~ Data wrangling
+library(influence.ME)   #~ Sensitivity tests
+library(raster)         #~ Spatial data wrangling
 library(terra)
 library(fasterize)
 library(sf)
-
 library(geosphere)
-library(ape)
-
+library(ape)            #~ Phylogenetic data wrangling
 library(phytools)
 library(rotl)
 library(ggtree)
-
 library(ggtreeExtra)
 
 
@@ -63,6 +60,7 @@ mam_df1  <- subset(dat$mam_df, DP_to_2014 >= 3 & lambda_rsq > 0)
 bird_df2 <- subset(bird_df1, !(spp_idx %in% c("Gyps_bengalensis", "Podiceps_nigricollis")))
 mam_df2 <- subset(mam_df1, !(ID %in% c(23514)))
 
+# Note: dat_summary_plttr will not run due to lack of lat/long in anaonymised data
 dat_summ_plt_ls <- dat_summary_plttr(rbind.fill(mam_df2,
                                                 bird_df2))
 
@@ -259,7 +257,9 @@ p_bm_coefs_av <- ggplot(avg_coefs_df %>%
 
 p_bm_coefs_av
 
-# For Fig 2c: coefficiant values over lags
+# For Fig 2c: coefficient values over lags
+# Note: luc col is specified based on the luc type used in the "best" lag-based 
+# model for each ecological subset/class
 p_bm_coefs_row <- bind_rows(fig_ls$coef_df %>%
                               filter(model == "m1b" &
                                        type == "year" &
@@ -1156,7 +1156,6 @@ bird_bm3_dat <- lmm_bm_fit_store(subset(bm_figs$plt_ls$m1b.bm3$metr_df,
                                  dat$env_df)
 
 
-# TODO:
 # Load env data
 # Bind hist to each sc - to account for lagd
 pop_env_hist <- readRDS("../Data/env_hist.rds")

@@ -3,7 +3,7 @@
 ### Cross-validation stability
 ### Effect of removing short population time-series (DP_min thresholds)
 ### Ecological subsetting
-### Alterntive environmental datasets
+### Alternative environmental datasets
 ###%%%%%%%%%%
 
 # Clear env
@@ -573,6 +573,8 @@ p_ecol_coefs_av <- ggplot(avg_coefs_df %>%
 p_ecol_coefs_av
 
 
+# Note: luc col is specified based on the luc type used in the "best" lag-based 
+# model for each ecological subset/class
 p_ecol_coefs_row <- bind_rows(fig_ls$coef_df %>%
                                 filter(model == "m1b" &
                                          type == "year" &
@@ -1317,7 +1319,7 @@ luc_change_df <- left_join(luh2_change_df,
                            esa_change_df)
 
 
-# Double check/clarify hyde lu types - 
+# hyde lu types - 
 # hyde..._crng = cropland + conv_rangeland + pasture
 # hyde..._grz = cropland + grazing
 # Grazing is a broader set that includes conv_rangeland, pasture and natural rangeland
