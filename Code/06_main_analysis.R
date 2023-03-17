@@ -1158,18 +1158,9 @@ bird_bm3_dat <- lmm_bm_fit_store(subset(bm_figs$plt_ls$m1b.bm3$metr_df,
 
 
 # Load env data
-# Bind hist to each sc - to account for lagd
-pop_env_hist <- readRDS("../Data/env_hist.rds")
 pop_env_126  <- readRDS("../Data/env_126.rds")
 pop_env_370  <- readRDS("../Data/env_370.rds")
 pop_env_585  <- readRDS("../Data/env_585.rds")
-
-pop_env_126 <- bind_rows(pop_env_hist,
-                         pop_env_126)
-pop_env_370 <- bind_rows(pop_env_hist,
-                         pop_env_370)
-pop_env_585 <- bind_rows(pop_env_hist,
-                         pop_env_585)
 
 
 # Project models
@@ -1234,8 +1225,8 @@ w_av_sc_fut_proj_df <- bind_rows(expand.grid(class = c("bird", "mammal"),
                                                               "bm2", "bm3")) %>%
                                        data.frame() %>%
                                        mutate(TS_end = 2010,
-                                              pred_incl_ranef_mult = 1,
-                                              pred_excl_ranef_mult = 1),
+                                              pred_incl_ranef_Idx = 1,
+                                              pred_excl_ranef_Idx = 1),
                                      
                                      # Alls
                                      bird_pop_proj$w_av_sc_proj_df %>%
@@ -1359,6 +1350,25 @@ ggsave("../Results/Figs/bm_split_pred_av_proj_av_2100.pdf",
 # And free scale for sm fig 18
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Mammals and birds in own columns for better scales...
+lag_lim_df <- bind_rows(subset(fig_ls$coef_df,
+                               delta == 0 &
+                                 model == "m1b" &
+                                 type == "year") %>%
+                          dplyr::mutate(ecol_sub = "All"),
+                        subset(bm_figs$coef_df,
+                               delta == 0 &
+                                 type == "year")) %>%
+  select(model, ecol_sub, class, cc_lag, luc_lag, R2m, R2c, AICc,
+         cc_col, luc_col, type, delta) %>%
+  unique() %>%
+  dplyr::mutate(min_lag = case_when(cc_lag <= luc_lag ~ cc_lag,
+                                    T ~ luc_lag),
+                max_lag = case_when(cc_lag >= luc_lag ~ cc_lag,
+                                    T ~ luc_lag)) %>%
+  left_join(w_av_sc_fut_proj_df %>%
+              dplyr::group_by(ecol_sub) %>%
+              dplyr::summarise(min_Idx = min(pred_incl_ranef_Idx)))
+
 
 plot_grid(ggplot(w_av_sc_fut_proj_df %>% filter(class == "bird")) +
             geom_hline(yintercept = 1, lty = 1, colour = "darkgrey", size = 0.75) +

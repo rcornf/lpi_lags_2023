@@ -1087,7 +1087,7 @@ fut_env_rate_calc_yrs <- function(lags, fut_env_ls, env_){
             "2050_2060", "2060_2070", "2070_2080", "2080_2090", "2090_2100",
             "2100_2110", "2110_2120", "2120_2130", "2130_2140")
   
-  out_df <- expand.grid(loc_id = locs,
+  out_df <- expand.grid(loc_idx = locs,
                         sc = sc_,
                         Dec = decs,
                         lag = lags,
@@ -1357,6 +1357,9 @@ lmm_bm_fit_store <- function(mod_df, pop_df, env_df){
     
     # subset to bm_split
     # Note: if ecol_sub == main, model for all pops is fitted
+    if (mod_df$ecol_sub[i] == "main"){
+      df <- pop_df
+    }
     if (mod_df$ecol_sub[i] == "bm1"){
       df <- subset(pop_df, bm <= bm_quants[1])
     }
@@ -1478,7 +1481,8 @@ mod_proj <- function(lmm_dat, env_fut){
     
     # then inner join change rates to pop_pred_df_
     pop_proj_df <- inner_join(pop_proj_df,
-                              tmp_env)
+                              tmp_env,
+                              multiple = "all")
     
     # pred with/without ranef
     pop_proj_df$pred_incl_ranef <- lme4:::predict.merMod(mod_dat_$mod_obj,
